@@ -1,0 +1,1874 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a84ff" />
+<meta name="description" content="Appeldoorn Voice Agent — présentation client : capacités, onboarding par phases, mise en production." />
+<title>Appeldoorn Voice Agent · Présentation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   APPELDOORN VOICE AGENT — CLIENT PRESENTATION
+   Glassmorphism · Linear icons · Apple-minimal · Azure brand
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  /* Brand */
+  --bg: #f5f5f7;
+  --bg-2: #ebebf0;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --text-muted: #6e6e73;
+  --text-soft: #86868b;
+  --line: #d2d2d7;
+  --line-soft: #e8e8ed;
+
+  --azure: #5ac8fa;
+  --azure-deep: #0a84ff;
+  --azure-soft: #e1f0ff;
+  --azure-tint: #f0f7ff;
+  --navy: #003366;
+
+  --green: #34c759;
+  --green-soft: #e8f8ee;
+  --red: #ff3b30;
+  --red-soft: #ffe9e8;
+  --amber: #ff9f0a;
+  --amber-soft: #fff4e0;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-shadow: 0 1px 2px rgba(10, 60, 130, 0.04), 0 12px 40px rgba(10, 60, 130, 0.10);
+  --glass-shadow-hover: 0 4px 8px rgba(10, 60, 130, 0.06), 0 24px 60px rgba(10, 60, 130, 0.14);
+
+  --radius: 22px;
+  --radius-sm: 14px;
+  --radius-xs: 10px;
+
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --maxw: 1180px;
+  --pad: clamp(20px, 4vw, 40px);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+  background:
+    radial-gradient(1200px 800px at 8% 0%,    rgba(90, 200, 250, 0.30), transparent 60%),
+    radial-gradient(1100px 900px at 95% 18%,  rgba(10, 132, 255, 0.22), transparent 65%),
+    radial-gradient(900px 700px at 50% 110%,  rgba(126, 200, 255, 0.30), transparent 70%),
+    linear-gradient(180deg, #e8f2ff 0%, #d6e9ff 50%, #e8f2ff 100%);
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+a { color: var(--azure-deep); text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ───── ICONS (linear, stroke-based) ───── */
+.ic { width: 22px; height: 22px; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; flex-shrink: 0; vertical-align: middle; }
+.ic-sm { width: 16px; height: 16px; stroke-width: 1.8; }
+.ic-lg { width: 28px; height: 28px; stroke-width: 1.6; }
+.ic-xl { width: 36px; height: 36px; stroke-width: 1.5; }
+.ic-azure { stroke: var(--azure-deep); }
+.ic-grey  { stroke: var(--text-muted); }
+.ic-green { stroke: var(--green); }
+.ic-red   { stroke: var(--red); }
+.ic-amber { stroke: var(--amber); }
+.ic-white { stroke: white; }
+
+/* ───── GLASS UTILITY ───── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(22px);
+  -webkit-backdrop-filter: saturate(180%) blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+}
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: saturate(180%) blur(28px);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius);
+}
+
+/* ───── NAV ───── */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: linear-gradient(180deg, rgba(10, 132, 255, 0.55) 0%, rgba(10, 132, 255, 0.42) 100%);
+  backdrop-filter: saturate(180%) blur(28px);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 20px rgba(10, 80, 160, 0.10);
+}
+.nav-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 14px var(--pad);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 12px;
+  background: transparent; border: 0; padding: 0;
+  color: white;
+}
+.brand-mark {
+  width: 40px; height: 40px;
+  background: linear-gradient(135deg, var(--azure), var(--azure-deep));
+  border-radius: 11px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 20px; color: white;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.brand-text {
+  display: flex; flex-direction: column; line-height: 1.1;
+}
+.brand-text .name {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: 16px; letter-spacing: 0.06em;
+  color: white;
+  text-shadow: 0 1px 4px rgba(0, 60, 130, 0.30);
+  text-transform: uppercase;
+}
+.brand-text .sub {
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.nav-links { display: none; gap: 4px; }
+@media (min-width: 880px) { .nav-links { display: flex; } }
+.nav-links a {
+  color: rgba(255,255,255,0.92);
+  font-size: 13.5px; font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 10px;
+  transition: background 0.18s, color 0.18s;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.20); color: white; }
+
+/* ───── HERO ───── */
+.hero {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: clamp(48px, 8vw, 96px) var(--pad) clamp(56px, 8vw, 96px);
+  position: relative;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: 12px; letter-spacing: 0.14em;
+  color: var(--azure-deep);
+  background: rgba(10, 132, 255, 0.10);
+  border: 1px solid rgba(10, 132, 255, 0.20);
+  padding: 7px 14px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+  color: var(--navy);
+}
+.hero h1 .accent {
+  background: linear-gradient(135deg, var(--azure) 0%, var(--azure-deep) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-lede {
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 760px;
+  margin: 0 0 36px;
+  font-weight: 400;
+}
+.hero-cta-row {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 22px;
+  border-radius: 12px;
+  font-size: 15px; font-weight: 600;
+  border: 0;
+  transition: transform 0.15s, box-shadow 0.18s, background 0.18s;
+  cursor: pointer;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--azure) 0%, var(--azure-deep) 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(10, 132, 255, 0.36), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(10, 132, 255, 0.46); }
+.btn-ghost {
+  background: var(--glass-bg-strong);
+  color: var(--navy);
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover { background: white; transform: translateY(-1px); }
+
+/* Hero stats */
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 56px;
+}
+.stat {
+  padding: 22px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.stat .v {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: clamp(26px, 3.4vw, 34px);
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.stat .v small { font-size: 0.55em; color: var(--azure-deep); }
+.stat .l {
+  font-size: 13px; color: var(--text-muted);
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* ───── SECTIONS ───── */
+.section {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: clamp(56px, 8vw, 96px) var(--pad);
+  scroll-margin-top: 80px;
+}
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--azure-deep);
+  margin-bottom: 14px;
+  display: inline-flex; align-items: center; gap: 10px;
+}
+.section-eyebrow::before {
+  content: ""; display: inline-block; width: 28px; height: 2px;
+  background: var(--azure-deep); border-radius: 2px;
+}
+.section-title {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: clamp(28px, 4.6vw, 44px);
+  line-height: 1.12; letter-spacing: -0.02em;
+  color: var(--navy);
+  margin: 0 0 16px;
+  max-width: 880px;
+}
+.section-lede {
+  font-size: clamp(15.5px, 1.8vw, 18px);
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-width: 780px;
+  margin: 0 0 40px;
+}
+
+/* ───── METAPHOR (employee analogy) ───── */
+.metaphor-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+@media (min-width: 880px) {
+  .metaphor-grid { grid-template-columns: 1fr auto 1fr; gap: 22px; }
+}
+.metaphor-card {
+  padding: 30px;
+  border-radius: var(--radius);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.metaphor-card.human {
+  background: linear-gradient(135deg, rgba(255,255,255,0.78), rgba(245,245,247,0.62));
+}
+.metaphor-card.agent {
+  background: linear-gradient(135deg, rgba(10,132,255,0.10), rgba(90,200,250,0.18));
+  border: 1px solid rgba(10,132,255,0.20);
+}
+.mc-head {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.mc-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.mc-icon.human { background: linear-gradient(135deg, #e8e8ed, #d2d2d7); }
+.mc-icon.agent { background: linear-gradient(135deg, var(--azure), var(--azure-deep)); }
+.mc-head h3 {
+  margin: 0; font-family: var(--font-mono); font-weight: 700;
+  font-size: 18px; color: var(--navy); letter-spacing: -0.01em;
+}
+.mc-head .mc-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.mc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.mc-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14.5px; line-height: 1.5;
+  color: var(--text);
+}
+.mc-list .mc-bullet {
+  width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
+}
+.metaphor-divider {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 13px; letter-spacing: 0.2em;
+  color: var(--azure-deep);
+  text-transform: uppercase;
+  position: relative;
+}
+.metaphor-divider .pulse {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--azure), var(--azure-deep));
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(10, 132, 255, 0.4);
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 4px 20px rgba(10, 132, 255, 0.4); }
+  50%      { transform: scale(1.07); box-shadow: 0 4px 30px rgba(10, 132, 255, 0.65); }
+}
+
+.metaphor-callout {
+  margin-top: 32px;
+  padding: 28px 32px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(0,51,102,0.95), rgba(10,132,255,0.92));
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.metaphor-callout::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(600px 300px at 90% -50%, rgba(255,255,255,0.18), transparent);
+  pointer-events: none;
+}
+.metaphor-callout p {
+  margin: 0; position: relative;
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.5; font-weight: 500;
+}
+.metaphor-callout strong { color: var(--azure); font-weight: 700; }
+
+/* ───── CAPABILITIES GRID ───── */
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.cap {
+  position: relative;
+  padding: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
+  overflow: hidden;
+}
+.cap:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glass-shadow-hover);
+  background: rgba(255,255,255,0.86);
+}
+.cap-icon {
+  width: 46px; height: 46px;
+  border-radius: 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, rgba(10,132,255,0.10), rgba(90,200,250,0.20));
+  border: 1px solid rgba(10,132,255,0.16);
+  margin-bottom: 16px;
+}
+.cap h4 {
+  margin: 0 0 8px;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 16px; color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.cap p { margin: 0; font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+/* ───── PHASES TIMELINE ───── */
+.phase-progress {
+  position: relative;
+  margin-bottom: 36px;
+  padding: 22px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+}
+.phase-progress-track {
+  position: relative;
+  height: 6px;
+  background: var(--line-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.phase-progress-fill {
+  position: absolute; inset: 0; right: auto;
+  width: var(--progress, 40%);
+  background: linear-gradient(90deg, var(--azure), var(--azure-deep));
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.phase-progress-labels {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 12px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+.phase-progress-labels span { text-align: center; padding: 4px 0; }
+.phase-progress-labels span.done { color: var(--azure-deep); }
+.phase-progress-labels span.current {
+  color: var(--navy);
+  background: rgba(10,132,255,0.10);
+  border-radius: 6px;
+}
+
+.phases {
+  display: flex; flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+.phases::before {
+  content: "";
+  position: absolute;
+  left: 31px; top: 60px; bottom: 60px;
+  width: 2px;
+  background: linear-gradient(180deg,
+    rgba(10,132,255,0.35) 0%,
+    rgba(10,132,255,0.15) 50%,
+    rgba(10,132,255,0) 100%);
+}
+@media (max-width: 720px) {
+  .phases::before { display: none; }
+}
+.phase {
+  position: relative;
+  border-radius: var(--radius);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.25s, background 0.25s;
+}
+.phase:hover { box-shadow: var(--glass-shadow-hover); }
+.phase[open] {
+  background: rgba(255,255,255,0.85);
+  box-shadow: var(--glass-shadow-hover);
+}
+.phase-summary {
+  padding: 20px 22px;
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 18px;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+.phase-summary::-webkit-details-marker { display: none; }
+.phase-num {
+  width: 64px; height: 64px;
+  border-radius: 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 800; font-size: 24px;
+  color: white;
+  box-shadow: 0 4px 14px rgba(10, 80, 160, 0.20), inset 0 1px 0 rgba(255,255,255,0.25);
+  background: linear-gradient(135deg, var(--azure), var(--azure-deep));
+  position: relative;
+  z-index: 1;
+}
+.phase[data-status="done"] .phase-num {
+  background: linear-gradient(135deg, var(--green) 0%, #2aa84b 100%);
+  box-shadow: 0 4px 14px rgba(52, 199, 89, 0.30), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.phase[data-status="current"] .phase-num {
+  animation: phasePulse 2.6s ease-in-out infinite;
+}
+@keyframes phasePulse {
+  0%, 100% { box-shadow: 0 4px 14px rgba(10, 132, 255, 0.30), inset 0 1px 0 rgba(255,255,255,0.25); }
+  50% { box-shadow: 0 6px 24px rgba(10, 132, 255, 0.55), 0 0 0 6px rgba(10, 132, 255, 0.18), inset 0 1px 0 rgba(255,255,255,0.25); }
+}
+.phase[data-status="upcoming"] .phase-num {
+  background: linear-gradient(135deg, #cfd5dd 0%, #9aa3ad 100%);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+.phase-head {
+  min-width: 0;
+}
+.phase-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.phase-tag.done { background: var(--green-soft); color: #186b2c; }
+.phase-tag.current { background: rgba(10,132,255,0.12); color: var(--azure-deep); }
+.phase-tag.upcoming { background: var(--bg-2); color: var(--text-muted); }
+.phase-title {
+  margin: 0;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: clamp(17px, 2.2vw, 20px);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.phase-meta {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+.phase-toggle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  border: 1px solid var(--line-soft);
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform 0.3s, background 0.18s;
+}
+.phase[open] .phase-toggle { transform: rotate(180deg); background: var(--azure-soft); border-color: rgba(10,132,255,0.20); }
+.phase-toggle .ic { stroke: var(--azure-deep); width: 18px; height: 18px; stroke-width: 2; }
+
+.phase-body {
+  padding: 8px 22px 28px 104px;
+  border-top: 1px solid var(--line-soft);
+  margin-top: 4px;
+  animation: phaseFade 0.35s ease;
+}
+@media (max-width: 720px) {
+  .phase-summary { grid-template-columns: 52px 1fr 36px; gap: 12px; padding: 18px; }
+  .phase-num { width: 52px; height: 52px; font-size: 20px; border-radius: 14px; }
+  .phase-body { padding: 6px 18px 22px; }
+}
+@keyframes phaseFade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.phase-section {
+  margin-top: 18px;
+}
+.phase-section h5 {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 12px;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 13px; letter-spacing: 0.10em;
+  color: var(--azure-deep);
+  text-transform: uppercase;
+}
+
+/* Sub-points (with why/risk/our approach) */
+.subpoint {
+  padding: 18px 20px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.66);
+  border: 1px solid var(--line-soft);
+  margin-bottom: 10px;
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+}
+.subpoint:hover { border-color: rgba(10,132,255,0.22); background: rgba(255,255,255,0.85); transform: translateX(2px); }
+.subpoint-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.subpoint-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(10,132,255,0.10), rgba(90,200,250,0.18));
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.subpoint-title {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 15px; color: var(--navy);
+  letter-spacing: -0.01em;
+}
+.subpoint-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+@media (min-width: 640px) {
+  .subpoint-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.sp-cell {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.sp-cell .sp-label {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-weight: 600;
+  font-size: 11px; letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  opacity: 0.85;
+}
+.sp-cell.why    { background: rgba(10,132,255,0.06); color: var(--navy); }
+.sp-cell.why .sp-label    { color: var(--azure-deep); }
+.sp-cell.risk   { background: rgba(255,59,48,0.06); color: #861f17; }
+.sp-cell.risk .sp-label   { color: var(--red); }
+.sp-cell.us     { background: rgba(52,199,89,0.06); color: #155b29; }
+.sp-cell.us .sp-label     { color: #186b2c; }
+
+/* Bullet list (light, generic) */
+.kv-list {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; gap: 8px;
+}
+.kv-list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 14px; line-height: 1.55;
+  color: var(--text);
+}
+.kv-list li .ic { stroke: var(--azure-deep); margin-top: 1px; }
+
+/* Phase test stats (3up cards inside phase) */
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+.mini-stat {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(10,132,255,0.08), rgba(90,200,250,0.15));
+  border: 1px solid rgba(10,132,255,0.14);
+}
+.mini-stat .v {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: 22px; color: var(--navy);
+  letter-spacing: -0.01em; line-height: 1.1;
+}
+.mini-stat .l {
+  font-size: 12px; color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+/* Authors row (phase 0) */
+.authors {
+  display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;
+}
+.author {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--line);
+  font-size: 13.5px; font-weight: 600;
+  color: var(--navy);
+}
+.author-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--azure), var(--azure-deep));
+  color: white;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 11px;
+}
+
+/* ───── PRODUCTION SECTION ───── */
+.prod-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.prod-card {
+  padding: 26px;
+  border-radius: var(--radius-sm);
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  text-align: left;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.prod-card:hover { transform: translateY(-3px); box-shadow: var(--glass-shadow-hover); }
+.prod-icon {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--azure), var(--azure-deep));
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 14px rgba(10, 132, 255, 0.30);
+}
+.prod-card h4 {
+  margin: 0 0 6px;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 17px; color: var(--navy); letter-spacing: -0.01em;
+}
+.prod-card .v {
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: 28px; color: var(--azure-deep); letter-spacing: -0.02em;
+  line-height: 1; margin-bottom: 6px;
+}
+.prod-card p { margin: 8px 0 0; font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+
+/* Loop / improvement */
+.loop {
+  margin-top: 32px;
+  padding: 28px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(225,240,255,0.7));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+.loop h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 20px; color: var(--navy); letter-spacing: -0.01em;
+}
+.loop > p { margin: 0 0 22px; color: var(--text-muted); font-size: 15px; }
+.loop-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.loop-step {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: white;
+  border: 1px solid var(--line-soft);
+  position: relative;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.loop-step .num {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 11px; letter-spacing: 0.12em;
+  color: var(--azure-deep);
+  text-transform: uppercase;
+}
+.loop-step .t {
+  font-family: var(--font-mono); font-weight: 700;
+  font-size: 15px; color: var(--navy);
+}
+.loop-step .d {
+  font-size: 13px; color: var(--text-muted); line-height: 1.5;
+}
+
+/* ───── CTA ───── */
+.cta {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: clamp(48px, 8vw, 80px) var(--pad);
+}
+.cta-card {
+  padding: clamp(32px, 5vw, 56px);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--azure-deep) 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(10, 80, 160, 0.30);
+}
+.cta-card::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    radial-gradient(600px 300px at 90% -50%, rgba(255,255,255,0.18), transparent),
+    radial-gradient(500px 400px at -10% 110%, rgba(90, 200, 250, 0.30), transparent);
+  pointer-events: none;
+}
+.cta-card h2 {
+  position: relative;
+  margin: 0 0 16px;
+  font-family: var(--font-mono); font-weight: 800;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.15; letter-spacing: -0.02em;
+}
+.cta-card p {
+  position: relative;
+  margin: 0 0 28px;
+  font-size: clamp(15px, 1.8vw, 17px);
+  color: rgba(255,255,255,0.85);
+  max-width: 720px;
+  line-height: 1.55;
+}
+.cta-actions { position: relative; display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-white {
+  background: white; color: var(--navy);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.20);
+}
+.btn-white:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0,0,0,0.30); }
+.btn-outline {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.40);
+}
+.btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+/* ───── FOOTER ───── */
+footer {
+  max-width: var(--maxw); margin: 0 auto;
+  padding: 32px var(--pad) 56px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+footer .sep { margin: 0 8px; opacity: 0.6; }
+
+/* ───── SCROLL REVEAL ───── */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s cubic-bezier(0.2,0.8,0.2,1), transform 0.6s cubic-bezier(0.2,0.8,0.2,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal[data-delay="1"] { transition-delay: 0.06s; }
+.reveal[data-delay="2"] { transition-delay: 0.12s; }
+.reveal[data-delay="3"] { transition-delay: 0.18s; }
+.reveal[data-delay="4"] { transition-delay: 0.24s; }
+.reveal[data-delay="5"] { transition-delay: 0.30s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ ICON SPRITE ═══════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-mic"        viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></symbol>
+    <symbol id="i-clock"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-shield"     viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-check"      viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="i-x"          viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-arrow-r"    viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-d"    viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+    <symbol id="i-bolt"       viewBox="0 0 24 24"><path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z"/></symbol>
+    <symbol id="i-loop"       viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 4v4h-4"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 20v-4h4"/></symbol>
+    <symbol id="i-users"      viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0"/><circle cx="17" cy="8" r="3"/><path d="M22 20a5 5 0 0 0-5-5"/></symbol>
+    <symbol id="i-user"       viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-brain"      viewBox="0 0 24 24"><path d="M12 4a3 3 0 0 0-3 3v1a3 3 0 0 0-2 5 3 3 0 0 0 2 5v1a3 3 0 0 0 6 0v-1a3 3 0 0 0 2-5 3 3 0 0 0-2-5V7a3 3 0 0 0-3-3Z"/><path d="M12 4v16M9 9h-.5M15 9h.5M9 15h-.5M15 15h.5"/></symbol>
+    <symbol id="i-cpu"        viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></symbol>
+    <symbol id="i-database"   viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></symbol>
+    <symbol id="i-link"       viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="i-headset"    viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="5" height="6" rx="2"/><rect x="16" y="14" width="5" height="6" rx="2"/><path d="M21 18v1a3 3 0 0 1-3 3h-3"/></symbol>
+    <symbol id="i-calendar"   viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></symbol>
+    <symbol id="i-message"    viewBox="0 0 24 24"><path d="M3 7a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-8l-5 4v-4a3 3 0 0 1-2-3Z"/></symbol>
+    <symbol id="i-search"     viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-globe"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-pin"        viewBox="0 0 24 24"><path d="M12 21s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12Z"/><circle cx="12" cy="9" r="3"/></symbol>
+    <symbol id="i-zap"        viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+    <symbol id="i-trend"      viewBox="0 0 24 24"><path d="M3 17 9 11l4 4 8-8"/><path d="M14 7h7v7"/></symbol>
+    <symbol id="i-star"       viewBox="0 0 24 24"><path d="m12 3 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6Z"/></symbol>
+    <symbol id="i-target"     viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-flag"       viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5"/></symbol>
+    <symbol id="i-rocket"     viewBox="0 0 24 24"><path d="M14 4c4 1 6 4 6 9-3 0-7 1-9 3-2-2-3-6-3-9 5 0 7-2 6-3Z"/><path d="m9 16-3 3M14 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></symbol>
+    <symbol id="i-graph"      viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-7"/></symbol>
+    <symbol id="i-eye"        viewBox="0 0 24 24"><path d="M2 12s4-8 10-8 10 8 10 8-4 8-10 8S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-pulse"      viewBox="0 0 24 24"><path d="M3 12h4l2-6 4 12 2-6h6"/></symbol>
+    <symbol id="i-wave"       viewBox="0 0 24 24"><path d="M3 12c2 0 2-4 4-4s2 8 4 8 2-12 4-12 2 8 4 8 2-4 4-4"/></symbol>
+    <symbol id="i-tools"      viewBox="0 0 24 24"><path d="M14 6a4 4 0 0 0 4 4l3 3-4 4-3-3a4 4 0 0 0-4-4Z"/><path d="m3 21 7-7"/><path d="M14 14 9 9l-3 3-3-3 5-5 3 3"/></symbol>
+    <symbol id="i-flow"       viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="9" y="15" width="6" height="6" rx="1"/><path d="M6 9v3h12V9M12 12v3"/></symbol>
+    <symbol id="i-volume"     viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4Z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14"/></symbol>
+    <symbol id="i-list"       viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-puzzle"     viewBox="0 0 24 24"><path d="M9 3h6v3a2 2 0 1 0 4 0V3h2v6h-3a2 2 0 1 0 0 4h3v6h-6v-3a2 2 0 1 0-4 0v3H5v-6h3a2 2 0 1 0 0-4H5V3h4Z"/></symbol>
+  </defs>
+</svg>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="brand" type="button" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">
+      <span class="brand-mark">A</span>
+      <span class="brand-text">
+        <span class="name">Appeldoorn</span>
+        <span class="sub">Voice Agent</span>
+      </span>
+    </button>
+    <div class="nav-links">
+      <a href="#metaphor">L'analogie</a>
+      <a href="#capacites">Capacités</a>
+      <a href="#onboarding">Onboarding</a>
+      <a href="#production">En production</a>
+      <a href="#crm">CRM intégré</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <span class="hero-eyebrow reveal">
+    <svg class="ic ic-sm ic-azure"><use href="#i-mic"/></svg>
+    Présentation client · v1.0
+  </span>
+  <h1 class="reveal" data-delay="1">
+    Votre nouvel <span class="accent">collaborateur virtuel</span><br>
+    pour le téléphone
+  </h1>
+  <p class="hero-lede reveal" data-delay="2">
+    Un agent vocal qui décroche, comprend, répond, prend des messages et organise des rappels —
+    avec la voix de votre cabinet, vingt-quatre heures sur vingt-quatre, sans jamais fatiguer.
+  </p>
+  <div class="hero-cta-row reveal" data-delay="3">
+    <a class="btn btn-primary" href="#onboarding">
+      Voir le parcours d'onboarding
+      <svg class="ic ic-sm ic-white"><use href="#i-arrow-r"/></svg>
+    </a>
+    <a class="btn btn-ghost" href="#capacites">
+      Capacités de l'agent
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat reveal" data-delay="1">
+      <div class="v">24<small>/7</small></div>
+      <div class="l">Disponibilité, sans pause</div>
+    </div>
+    <div class="stat reveal" data-delay="2">
+      <div class="v">&lt; 2<small>s</small></div>
+      <div class="l">Latence de réponse cible</div>
+    </div>
+    <div class="stat reveal" data-delay="3">
+      <div class="v">20<small>+</small></div>
+      <div class="l">Appels en parallèle</div>
+    </div>
+    <div class="stat reveal" data-delay="4">
+      <div class="v">FR-BE</div>
+      <div class="l">Septante • nonante natifs</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════ MÉTAPHORE ═══════════ -->
+<section class="section" id="metaphor">
+  <span class="section-eyebrow reveal">L'analogie qui change tout</span>
+  <h2 class="section-title reveal" data-delay="1">Pensez-le comme un nouveau collaborateur, pas comme un logiciel</h2>
+  <p class="section-lede reveal" data-delay="2">
+    Au départ, votre agent vocal n'est <em>pas</em> parfait — exactement comme un employé qui débute.
+    On le forme. La différence : là où un humain met des semaines à apprendre, votre agent
+    s'améliore en quelques heures.
+  </p>
+
+  <div class="metaphor-grid">
+    <div class="metaphor-card human reveal" data-delay="1">
+      <div class="mc-head">
+        <div class="mc-icon human">
+          <svg class="ic ic-lg ic-grey"><use href="#i-user"/></svg>
+        </div>
+        <div>
+          <h3>Un employé humain</h3>
+          <div class="mc-sub">Onboarding traditionnel</div>
+        </div>
+      </div>
+      <ul class="mc-list">
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-clock"/></svg><span><strong>Plusieurs semaines</strong> de formation avant d'être autonome</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-clock"/></svg><span>Disponible 8h/jour, fatigue, congés, weekends</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-users"/></svg><span>Un appel à la fois — file d'attente sur les pics</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-brain"/></svg><span>Variabilité du ton selon la fatigue, l'humeur</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-tools"/></svg><span>Mise à jour des connaissances : réunion, formation, mémo</span></li>
+      </ul>
+    </div>
+
+    <div class="metaphor-divider reveal" data-delay="2">
+      <span class="pulse">
+        <svg class="ic ic-lg ic-white"><use href="#i-bolt"/></svg>
+      </span>
+    </div>
+
+    <div class="metaphor-card agent reveal" data-delay="3">
+      <div class="mc-head">
+        <div class="mc-icon agent">
+          <svg class="ic ic-lg ic-white"><use href="#i-cpu"/></svg>
+        </div>
+        <div>
+          <h3>Votre agent vocal</h3>
+          <div class="mc-sub">Onboarding accéléré</div>
+        </div>
+      </div>
+      <ul class="mc-list">
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-zap"/></svg><span><strong>Quelques heures</strong> entre une correction et l'amélioration en ligne</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-clock"/></svg><span>24/7, 365 jours par an, sans variation</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-flow"/></svg><span>Plusieurs appels en parallèle, même aux heures de pointe</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-shield"/></svg><span>Cohérent — il ne dévie pas, ne fatigue pas, n'oublie pas</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-database"/></svg><span>Mise à jour des connaissances : automatique depuis vos sources</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="metaphor-callout reveal" data-delay="4">
+    <p>
+      Vous avez <strong>tout le pouvoir</strong> sur son fonctionnement et son efficacité.
+      C'est un employé <strong>optimisable en continu</strong> qui acquiert de nouvelles compétences
+      en quelques clics — mais il reste <strong>dépendant de la qualité de son training initial</strong>.
+      C'est exactement pour cela que l'onboarding est structuré en phases.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ CAPACITÉS (en production 100%) ═══════════ -->
+<section class="section" id="capacites">
+  <span class="section-eyebrow reveal">Capacités · une fois 100% déployé</span>
+  <h2 class="section-title reveal" data-delay="1">Ce que votre agent saura faire en production</h2>
+  <p class="section-lede reveal" data-delay="2">
+    Voici la liste précise des capacités opérationnelles à la fin du déploiement complet —
+    pas de promesses floues, pas de fonctionnalités cachées.
+  </p>
+
+  <div class="cap-grid">
+    <div class="cap reveal" data-delay="1">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-headset"/></svg></div>
+      <h4>Décrocher 24/7</h4>
+      <p>Web widget + ligne téléphonique dédiée. Aucun appel manqué, même en dehors des heures d'ouverture.</p>
+    </div>
+    <div class="cap reveal" data-delay="2">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-pin"/></svg></div>
+      <h4>Infos agence</h4>
+      <p>Horaires Seraing &amp; Neupré, adresses, contacts directs, jours d'ouverture exceptionnels.</p>
+    </div>
+    <div class="cap reveal" data-delay="3">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-search"/></svg></div>
+      <h4>Questions Crelan + Appeldoorn</h4>
+      <p>Recherche dans toute la base produit Crelan + le savoir-faire Appeldoorn : particuliers, entrepreneurs, coopérateurs.</p>
+    </div>
+    <div class="cap reveal" data-delay="1">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-message"/></svg></div>
+      <h4>Prendre un message</h4>
+      <p>Collecte structurée nom, téléphone, email, sujet — épelé et validé en direct par l'agent.</p>
+    </div>
+    <div class="cap reveal" data-delay="2">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-calendar"/></svg></div>
+      <h4>Proposer un rendez-vous</h4>
+      <p>Calendly relié — créneaux disponibles lus en temps réel et fixés directement avec le client.</p>
+    </div>
+    <div class="cap reveal" data-delay="3">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-users"/></svg></div>
+      <h4>Reconnaître un client existant</h4>
+      <p>Lookup dans votre vraie base CRM — l'agent salue par le prénom, connaît les conseillers attribués.</p>
+    </div>
+    <div class="cap reveal" data-delay="1">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-shield"/></svg></div>
+      <h4>Refuser proprement</h4>
+      <p>Aucune hallucination : si l'info n'est pas dans la base, l'agent oriente vers callback et n'invente jamais.</p>
+    </div>
+    <div class="cap reveal" data-delay="2">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-volume"/></svg></div>
+      <h4>Voix FR-BE naturelle</h4>
+      <p>Septante, nonante, prononciation correcte d'« Appeldoorn », « Crelan », « Seraing », « Neupré ».</p>
+    </div>
+    <div class="cap reveal" data-delay="3">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-list"/></svg></div>
+      <h4>Trace de chaque appel</h4>
+      <p>Transcript + audio horodatés, classés par catégorie métier, conservés selon vos règles RGPD.</p>
+    </div>
+    <div class="cap reveal" data-delay="1">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-star"/></svg></div>
+      <h4>Outils marketing &amp; offres personnalisées</h4>
+      <p>Campagnes d'upsell, offres spéciales, promotions contextuelles et messages dynamiques — configurables par client et activables en temps réel dans chaque interaction.</p>
+    </div>
+    <div class="cap reveal" data-delay="2">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-loop"/></svg></div>
+      <h4>Apprentissage continu</h4>
+      <p>Détection automatique des questions qu'il n'a pas su gérer → revue hebdo → injection dans la base.</p>
+    </div>
+    <div class="cap reveal" data-delay="3">
+      <div class="cap-icon"><svg class="ic ic-lg ic-azure"><use href="#i-link"/></svg></div>
+      <h4>Routage intelligent</h4>
+      <p>Selon la branche, l'urgence, la catégorie : email équipe, tâche Outlook, alerte conseiller.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ONBOARDING (PHASES) ═══════════ -->
+<section class="section" id="onboarding">
+  <span class="section-eyebrow reveal">Le parcours d'onboarding · 6 phases</span>
+  <h2 class="section-title reveal" data-delay="1">Pourquoi un déploiement progressif change tout</h2>
+  <p class="section-lede reveal" data-delay="2">
+    On ne lance pas un agent vocal directement face à vos vrais clients. On le forme, on le teste,
+    on l'ajuste, on le confronte au volume réel — par paliers, avec des boucles d'amélioration courtes.
+    C'est la <strong>condition</strong> d'un agent qui ne déçoit pas le jour J.
+  </p>
+
+  <!-- Progress bar -->
+  <div class="phase-progress reveal" data-delay="3" aria-label="Progression onboarding">
+    <div class="phase-progress-track">
+      <div class="phase-progress-fill" style="--progress: 30%"></div>
+    </div>
+    <div class="phase-progress-labels">
+      <span class="done">Phase 0</span>
+      <span class="current">Phase 1</span>
+      <span>Phase 2</span>
+      <span>Phase 3</span>
+      <span>Phase 4</span>
+      <span>Phase 5</span>
+    </div>
+  </div>
+
+  <div class="phases">
+
+    <!-- ───── PHASE 0 ───── -->
+    <details class="phase reveal" data-delay="1" data-status="done">
+      <summary class="phase-summary">
+        <div class="phase-num">0</div>
+        <div class="phase-head">
+          <span class="phase-tag done"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Terminée</span>
+          <h3 class="phase-title">Audit &amp; Découverte</h3>
+          <div class="phase-meta">Comprendre vos process, vos clients, vos besoins — avant d'écrire la moindre ligne</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Objectif</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Cartographier votre réalité métier avant de concevoir l'agent. Comprendre <em>vos</em> appels,
+            <em>vos</em> clients, <em>vos</em> objections récurrentes — pour que l'agent soit un miroir fidèle
+            du cabinet, pas un robot générique acheté sur étagère.
+          </p>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-list"/></svg> Livrables</h5>
+          <ul class="kv-list">
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Audit complet du process business existant (entrants, sortants, hors-scope)</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Cartographie des questions clients récurrentes (top 50 + cas atypiques)</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Définition des objectifs : volumes, segments, cas d'usage prioritaires</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Identification des limites et zones de prudence (sujets sensibles, confidentialité)</span></li>
+          </ul>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-users"/></svg> Réalisée par</h5>
+          <div class="authors">
+            <span class="author"><span class="author-avatar">OK</span> Omer Kara</span>
+            <span class="author"><span class="author-avatar">ST</span> Svetlana Totolina</span>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ───── PHASE 1 ───── -->
+    <details class="phase reveal" data-delay="2" data-status="current" open>
+      <summary class="phase-summary">
+        <div class="phase-num">1</div>
+        <div class="phase-head">
+          <span class="phase-tag current"><svg class="ic ic-sm" style="stroke:var(--azure-deep)"><use href="#i-pulse"/></svg> En cours</span>
+          <h3 class="phase-title">Architecture &amp; Personnalité</h3>
+          <div class="phase-meta">Le pipeline complet : voix, personnalité, bases de données, dictionnaires, workflows</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Objectif</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Construire le pipeline complet de fonctionnement, suivant le verdict de la Phase 0.
+            Chaque choix est expliqué : pourquoi cette approche est meilleure que la pratique courante,
+            et quel risque on évite en faisant les choses bien.
+          </p>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-puzzle"/></svg> Les composants — et pourquoi ils comptent</h5>
+
+          <!-- Sous-point 1 : Personnalité -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-user"/></svg></span>
+              <div class="subpoint-title">Personnalité &amp; voix de l'agent</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                Un agent doit avoir <em>la voix de votre cabinet</em>. Ton bancaire belge, tutoiement/vouvoiement
+                cohérent, vocabulaire Crelan. C'est ce qui fait qu'il représente Appeldoorn et pas un service tiers.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                Voix générique « anglophone-ish », ton froid ou trop commercial. Le client raccroche
+                ou perçoit le cabinet comme « low-cost ». Image de marque dégradée dès le premier appel.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                Voix FR-BE sélectionnée + system prompt adapté aux usages bancaires belges, validé sur shortlist d'écoutes.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sous-point 2 : Limites assumées -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-shield"/></svg></span>
+              <div class="subpoint-title">Limites assumées &amp; refus propre</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                Un agent qui essaie de répondre à tout <em>invente</em>. Définir clairement ce qu'il ne fait pas
+                garantit qu'il ne donnera jamais d'info erronée — règle critique dans le secteur bancaire.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                Hallucinations sur des taux, des conditions, des produits. Conséquences légales possibles.
+                Confiance client perdue dès qu'un conseiller doit corriger.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                Règle stricte : « Je n'ai pas l'info → je note votre demande pour un rappel ». Aucune improvisation possible.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sous-point 3 : Bases de données dynamiques -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-database"/></svg></span>
+              <div class="subpoint-title">Bases de données dynamiques (RAG)</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                L'info Crelan évolue : taux, conditions, produits, campagnes saisonnières. Une base
+                « dynamique » se met à jour automatiquement depuis vos sources, sans toucher à l'agent.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                L'agent répète des taux périmés. Refonte manuelle à chaque changement = coûts récurrents
+                + risque d'erreur humaine + lenteur de mise à jour.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                Ingestion automatique <code style="font-family:var(--font-mono);font-size:0.92em">crelan.be</code> → nettoyage IA → base vectorielle EU.
+                Re-ingestion à la demande, en quelques minutes.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sous-point 4 : Dictionnaires phonétiques -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-volume"/></svg></span>
+              <div class="subpoint-title">Dictionnaires phonétiques dynamiques</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                « Appeldoorn », « Crelan », « Seraing », « Neupré » : si l'agent les prononce mal,
+                le cabinet perd toute crédibilité dès la première phrase. C'est <em>le</em> détail qui se voit.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                Prononciation à l'anglaise des mots-pièges. Le client se dit « ce n'est même pas un Belge »
+                et raccroche. Effet « gadget » immédiat.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                Dictionnaire phonétique FR-BE qui corrige en temps réel. Évolutif : on ajoute un mot et l'agent l'apprend instantanément.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sous-point 5 : Workflows orchestrés -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-flow"/></svg></span>
+              <div class="subpoint-title">Workflows orchestrés (13 services indépendants)</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                Chaque tâche (ingestion, recherche, callback, log, apprentissage) est un service séparé.
+                On peut améliorer une brique sans toucher au reste — comme un cabinet où chaque équipe a son rôle.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                « Boîte noire » monolithique. Un bug bloque tout. Toute évolution coûte cher car il faut
+                refaire un test complet de l'ensemble. Pas de monitoring fin.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                13 workflows distincts, monitorés individuellement. Chaque amélioration est ciblée et testable seule.
+              </div>
+            </div>
+          </div>
+
+          <!-- Sous-point 6 : Apprentissage continu -->
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-loop"/></svg></span>
+              <div class="subpoint-title">Apprentissage continu intégré</div>
+            </div>
+            <div class="subpoint-grid">
+              <div class="sp-cell why">
+                <div class="sp-label"><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi</div>
+                Tout ce que l'agent ne sait pas répondre est <em>capturé</em> et remonté pour revue hebdo.
+                Chaque semaine, il devient un peu plus pertinent — automatiquement.
+              </div>
+              <div class="sp-cell risk">
+                <div class="sp-label"><svg class="ic ic-sm ic-red"><use href="#i-x"/></svg> Sans ça</div>
+                L'agent reste figé à son lancement. Au bout de 6 mois, il rate les mêmes questions
+                qu'au jour 1. Aucune amélioration mesurable. Effort humain énorme pour le faire évoluer.
+              </div>
+              <div class="sp-cell us">
+                <div class="sp-label"><svg class="ic ic-sm" style="stroke:#186b2c"><use href="#i-check"/></svg> Notre approche</div>
+                Workflow dédié qui détecte, classe, et propose des ajouts à valider en un clic. Boucle hebdomadaire pilotée par dashboard.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ───── PHASE 2 ───── -->
+    <details class="phase reveal" data-delay="3" data-status="upcoming">
+      <summary class="phase-summary">
+        <div class="phase-num">2</div>
+        <div class="phase-head">
+          <span class="phase-tag upcoming"><svg class="ic ic-sm ic-grey"><use href="#i-clock"/></svg> À venir · 2-3 jours</span>
+          <h3 class="phase-title">QA interne · Test équipe Appeldoorn</h3>
+          <div class="phase-meta">30-50 appels — tests logiques, voix, technique. Avant d'aller chez vos clients.</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Objectif</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Éliminer les bugs évidents <strong>avant</strong> que vos vrais clients ne soient exposés.
+            Vous et votre équipe testez l'agent comme s'il était déjà en production. C'est <em>votre</em>
+            pré-acceptance — vous validez ce qui partira en pilote.
+          </p>
+          <div class="mini-stats">
+            <div class="mini-stat"><div class="v">2-3 j</div><div class="l">Durée standard (1 j minimum si vous préférez plus court)</div></div>
+            <div class="mini-stat"><div class="v">30-50</div><div class="l">Appels test à passer</div></div>
+            <div class="mini-stat"><div class="v">&lt; 2s</div><div class="l">Latence cible vérifiée</div></div>
+            <div class="mini-stat"><div class="v">1-2 j</div><div class="l">Corrections rapides après tests</div></div>
+          </div>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-list"/></svg> Ce qu'on teste</h5>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-flow"/></svg></span>
+              <div class="subpoint-title">Tests logiques</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Happy path</strong> : les questions « faciles » qu'on attend</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Edge cases</strong> : questions ambiguës, multi-sujets, hors-scope, urgences</span></li>
+            </ul>
+          </div>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-volume"/></svg></span>
+              <div class="subpoint-title">Tests voix</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Ton bancaire approprié, ni trop froid ni trop commercial</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Vitesse de parole adaptée à la clientèle</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Prononciation : Appeldoorn, Crelan, Seraing, Neupré, septante, nonante</span></li>
+            </ul>
+          </div>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-cpu"/></svg></span>
+              <div class="subpoint-title">Tests techniques</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Latence</strong> : temps de réponse cible &lt; 1-2 s</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Interruptions</strong> : capacité à se taire si le client reprend la parole</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Gestion des silences</strong> : relance polie, pas de plantage</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-tools"/></svg> Suite des tests</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Toutes les remontées sont consolidées dans un tableau de bord. Corrections rapides en
+            <strong>1 à 2 jours</strong> selon la nature des écarts. On repasse les cas critiques jusqu'à validation.
+          </p>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ───── PHASE 3 ───── -->
+    <details class="phase reveal" data-delay="4" data-status="upcoming">
+      <summary class="phase-summary">
+        <div class="phase-num">3</div>
+        <div class="phase-head">
+          <span class="phase-tag upcoming"><svg class="ic ic-sm ic-grey"><use href="#i-link"/></svg> À venir · branchements</span>
+          <h3 class="phase-title">Connexions services · Calendly &amp; CRM réel</h3>
+          <div class="phase-meta">On branche votre agent sur vos vrais outils — pas avant que la base soit solide</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Objectif</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Une fois la Phase 2 validée, on connecte les services qui demandent les <em>vraies</em> données :
+            agendas, base clients. Pourquoi pas plus tôt ? Pour ne pas exposer vos données réelles
+            à un agent encore en calibrage.
+          </p>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-link"/></svg> Connexions activées</h5>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-calendar"/></svg></span>
+              <div class="subpoint-title">Calendly · prise de rendez-vous directe</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>L'agent lit en temps réel les créneaux disponibles de chaque conseiller</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Confirme avec le client, fixe le RDV, envoie la confirmation par email</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Plus d'allers-retours pour caler une heure</span></li>
+            </ul>
+          </div>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-database"/></svg></span>
+              <div class="subpoint-title">Base clients réelle · détection client existant</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Lookup au début de l'appel sur le numéro entrant</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Salutation personnalisée par le prénom + reconnaissance du conseiller attribué</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span>Historique de l'appel injecté dans le CRM en post-call</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ───── PHASE 4 ───── -->
+    <details class="phase reveal" data-delay="5" data-status="upcoming">
+      <summary class="phase-summary">
+        <div class="phase-num">4</div>
+        <div class="phase-head">
+          <span class="phase-tag upcoming"><svg class="ic ic-sm ic-grey"><use href="#i-rocket"/></svg> À venir · pilote réel</span>
+          <h3 class="phase-title">Pilote client · le vrai test</h3>
+          <div class="phase-meta">200 à 300 appels réels via le SVI Crelan — c'est ici que les patterns apparaissent</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Pourquoi cette phase est <em>la</em> plus importante</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            Les bugs n'apparaissent <strong>jamais</strong> en QA interne — ils apparaissent au volume réel,
+            avec de vrais clients qui posent leurs vraies questions, dans leur vrai contexte. C'est ici
+            qu'on découvre les patterns qu'on n'avait pas anticipés. Sauter cette phase = mauvaise surprise garantie au lancement.
+          </p>
+          <div class="mini-stats">
+            <div class="mini-stat"><div class="v">200-300</div><div class="l">Appels nécessaires pour révéler les patterns rares</div></div>
+            <div class="mini-stat"><div class="v">% fixe</div><div class="l">Du trafic Crelan routé via SVI vers l'agent</div></div>
+            <div class="mini-stat"><div class="v">Heures</div><div class="l">Délai entre détection et correction</div></div>
+          </div>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-flow"/></svg> Méthode</h5>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-globe"/></svg></span>
+              <div class="subpoint-title">Routage progressif via le SVI Crelan déjà en place</div>
+            </div>
+            <p style="margin:6px 0 0;font-size:13.5px;line-height:1.55;color:var(--text)">
+              Votre Service Vocal Interactif Crelan existe déjà. On y branche notre agent sur un
+              <em>petit pourcentage</em> du trafic au départ — et on augmente progressivement à mesure que les chiffres se confirment.
+              Aucune perturbation pour les autres flux.
+            </p>
+          </div>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-eye"/></svg></span>
+              <div class="subpoint-title">Comment on sait si ça marche</h3>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Latence moyenne</strong> par appel — &lt; 2 s = OK</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Taux de réponse directe</strong> vs callback (objectif : 70%+ de questions résolues sans rappel)</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Hallucinations détectées</strong> — par audit LLM-as-judge sur échantillon</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Durée moyenne d'appel</strong> — trop long = friction</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Taux de raccroché précoce</strong> — alerte rouge</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-graph"/></svg><span><strong>Patterns de questions hors-scope</strong> — pour enrichir la base ensuite</span></li>
+            </ul>
+          </div>
+          <div class="subpoint">
+            <div class="subpoint-head">
+              <span class="subpoint-icon"><svg class="ic ic-azure"><use href="#i-tools"/></svg></span>
+              <div class="subpoint-title">Comment on remédie</div>
+            </div>
+            <ul class="kv-list" style="margin-top:6px">
+              <li><svg class="ic ic-sm"><use href="#i-loop"/></svg><span>Ajout au dictionnaire phonétique pour les mots mal prononcés</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-loop"/></svg><span>Re-ingestion ciblée des pages Crelan manquantes (en quelques minutes)</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-loop"/></svg><span>Ajustement du prompt système pour gérer un nouveau type de question</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-loop"/></svg><span>Création d'un workflow correctif dédié si un pattern récurrent apparaît</span></li>
+              <li><svg class="ic ic-sm"><use href="#i-loop"/></svg><span><strong>Boucle complète</strong> : détection → correction → mise en ligne → vérification, en moins d'une journée</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ───── PHASE 5 ───── -->
+    <details class="phase reveal" data-delay="5" data-status="upcoming">
+      <summary class="phase-summary">
+        <div class="phase-num">5</div>
+        <div class="phase-head">
+          <span class="phase-tag upcoming"><svg class="ic ic-sm ic-grey"><use href="#i-flag"/></svg> Lancement complet</span>
+          <h3 class="phase-title">Mise en production · Crelan + Appeldoorn</h3>
+          <div class="phase-meta">Déploiement complet sur l'ensemble du trafic + suivi continu</div>
+        </div>
+        <div class="phase-toggle"><svg class="ic"><use href="#i-arrow-d"/></svg></div>
+      </summary>
+      <div class="phase-body">
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-target"/></svg> Ce qui change</h5>
+          <p style="margin:0;color:var(--text);font-size:14.5px;line-height:1.6">
+            L'agent passe en production sur l'ensemble du trafic Crelan + Appeldoorn. À ce stade,
+            les chiffres du pilote ont validé que la qualité est au rendez-vous. Le déploiement complet
+            n'est <strong>pas</strong> une fin — c'est le début de la vie utile de l'agent.
+          </p>
+        </div>
+
+        <div class="phase-section">
+          <h5><svg class="ic ic-sm ic-azure"><use href="#i-loop"/></svg> Suivi continu post-lancement</h5>
+          <ul class="kv-list">
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Évaluation hebdomadaire automatique</strong> : test de régression sur 60+ questions de référence chaque lundi matin</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Apprentissage continu</strong> : revue hebdo des questions sans réponse, ajout en un clic dans la base</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Dashboard temps réel</strong> : volumes, latence, satisfaction, taux de hallucination</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Alerte automatique</strong> en cas de régression supérieure à 5%</span></li>
+            <li><svg class="ic ic-sm"><use href="#i-check"/></svg><span><strong>Rétention RGPD</strong> : transcripts 365 j, audio 90 j, EU only</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </details>
+
+  </div>
+
+  <!-- LOOP / CONTINUOUS IMPROVEMENT -->
+  <div class="loop reveal" data-delay="2">
+    <h3>La boucle d'amélioration · pourquoi ça marche</h3>
+    <p>
+      Chaque phase nourrit la suivante. Chaque appel en production fait remonter des signaux
+      qui améliorent l'agent — automatiquement. Voici la mécanique :
+    </p>
+    <div class="loop-steps">
+      <div class="loop-step">
+        <span class="num">01 · Capter</span>
+        <span class="t">Tout est tracé</span>
+        <span class="d">Transcript, audio, latence, parcours de l'appel — chaque interaction est enregistrée pour analyse.</span>
+      </div>
+      <div class="loop-step">
+        <span class="num">02 · Détecter</span>
+        <span class="t">Les signaux remontent</span>
+        <span class="d">Workflow dédié qui repère les questions ratées, les nouvelles formulations, les zones d'ombre.</span>
+      </div>
+      <div class="loop-step">
+        <span class="num">03 · Décider</span>
+        <span class="t">Revue hebdomadaire</span>
+        <span class="d">Vous validez (ou non) en un clic les ajouts proposés à la base de connaissances.</span>
+      </div>
+      <div class="loop-step">
+        <span class="num">04 · Améliorer</span>
+        <span class="t">Mise à jour live</span>
+        <span class="d">Les ajouts validés sont injectés dans la base — l'agent les connaît dès l'appel suivant. Pas de redéploiement.</span>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══════════ EN PRODUCTION (advantages) ═══════════ -->
+<section class="section" id="production">
+  <span class="section-eyebrow reveal">Une fois en production · les bénéfices</span>
+  <h2 class="section-title reveal" data-delay="1">Un employé optimisable, pour de bon</h2>
+  <p class="section-lede reveal" data-delay="2">
+    Une fois calibré, votre agent vocal devient un membre de l'équipe avec des qualités
+    qu'aucun humain ne peut égaler — et des limites qu'on assume.
+  </p>
+
+  <div class="prod-grid">
+    <div class="prod-card reveal" data-delay="1">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-clock"/></svg></div>
+      <div class="v">24/7</div>
+      <h4>Disponible en permanence</h4>
+      <p>365 jours par an, pas de congés, pas de pauses — chaque appel décroché.</p>
+    </div>
+    <div class="prod-card reveal" data-delay="2">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-flow"/></svg></div>
+      <div class="v">∞</div>
+      <h4>Scalable</h4>
+      <p>Plusieurs appels en parallèle, même aux pics horaires. Aucun client n'attend.</p>
+    </div>
+    <div class="prod-card reveal" data-delay="3">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-shield"/></svg></div>
+      <div class="v">100%</div>
+      <h4>Cohérent</h4>
+      <p>Ne dévie pas, ne fatigue pas, n'oublie pas. Même qualité au 1er et au 1000e appel de la journée.</p>
+    </div>
+    <div class="prod-card reveal" data-delay="4">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-zap"/></svg></div>
+      <div class="v">~h</div>
+      <h4>Améliorable en heures</h4>
+      <p>De la détection d'un défaut à la correction en ligne : moins d'une journée. Pas de semaines de formation.</p>
+    </div>
+    <div class="prod-card reveal" data-delay="1">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-brain"/></svg></div>
+      <div class="v">+1</div>
+      <h4>Apprend en continu</h4>
+      <p>Acquiert de nouvelles compétences en quelques clics, sans repasser par un cycle complet.</p>
+    </div>
+    <div class="prod-card reveal" data-delay="2">
+      <div class="prod-icon"><svg class="ic ic-lg ic-white"><use href="#i-eye"/></svg></div>
+      <div class="v">100%</div>
+      <h4>Traçable</h4>
+      <p>Chaque appel est documenté, classé, auditabe. Pour la compliance, pour l'amélioration, pour la sérénité.</p>
+    </div>
+  </div>
+
+  <!-- Reminder of dependence -->
+  <div class="loop reveal" data-delay="3" style="margin-top:32px;background:linear-gradient(135deg,rgba(255,159,10,0.08),rgba(255,193,7,0.06));border:1px solid rgba(255,159,10,0.20)">
+    <h3 style="display:flex;align-items:center;gap:10px"><svg class="ic ic-amber"><use href="#i-shield"/></svg> Le rappel important</h3>
+    <p style="color:var(--text);font-size:15px;margin:0 0 6px">
+      Aussi puissant qu'il soit, votre agent reste <strong>dépendant de la qualité de son training initial</strong>
+      et du soin apporté à son calibrage. C'est exactement pour cela que l'onboarding est structuré
+      en 6 phases avec des boucles courtes — on ne saute pas d'étape, on ne brûle pas les paliers.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ CRM LAYER · POSITIONING STRATÉGIQUE ═══════════ -->
+<section class="section" id="crm">
+  <span class="section-eyebrow reveal">Le cœur stratégique · au-delà du téléphone</span>
+  <h2 class="section-title reveal" data-delay="1">Le voice agent devient votre <span style="background:linear-gradient(135deg,var(--azure),var(--azure-deep));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">interface CRM temps réel</span></h2>
+  <p class="section-lede reveal" data-delay="2">
+    Ce n'est pas « un produit à côté du CRM ». C'est la transformation du voice agent en
+    <strong>point d'entrée CRM</strong>, capable de créer, enrichir et exploiter les fiches clients
+    automatiquement — comme nous vous l'avons déjà proposé pendant la phase onboarding.
+  </p>
+
+  <!-- 3 piliers -->
+  <div class="cap-grid reveal" data-delay="2" style="margin-bottom:36px">
+    <div class="cap" style="background:linear-gradient(135deg,rgba(10,132,255,0.10),rgba(90,200,250,0.18));border-color:rgba(10,132,255,0.20)">
+      <div class="cap-icon" style="background:linear-gradient(135deg,var(--azure),var(--azure-deep));border:0">
+        <svg class="ic ic-lg ic-white"><use href="#i-headset"/></svg>
+      </div>
+      <h4>Voice agent</h4>
+      <p style="color:var(--navy);font-weight:500">Interaction</p>
+      <p>Décroche, comprend, dialogue, prend des messages, prend des RDV. La couche conversationnelle 24/7.</p>
+    </div>
+    <div class="cap" style="background:linear-gradient(135deg,rgba(10,132,255,0.10),rgba(90,200,250,0.18));border-color:rgba(10,132,255,0.20)">
+      <div class="cap-icon" style="background:linear-gradient(135deg,var(--azure),var(--azure-deep));border:0">
+        <svg class="ic ic-lg ic-white"><use href="#i-trend"/></svg>
+      </div>
+      <h4>Marketing engine</h4>
+      <p style="color:var(--navy);font-weight:500">Upsell &amp; offres</p>
+      <p>Injecte les bonnes propositions au bon moment dans la conversation : campagnes, promos, offres ciblées.</p>
+    </div>
+    <div class="cap" style="background:linear-gradient(135deg,rgba(10,132,255,0.10),rgba(90,200,250,0.18));border-color:rgba(10,132,255,0.20)">
+      <div class="cap-icon" style="background:linear-gradient(135deg,var(--azure),var(--azure-deep));border:0">
+        <svg class="ic ic-lg ic-white"><use href="#i-database"/></svg>
+      </div>
+      <h4>CRM layer</h4>
+      <p style="color:var(--navy);font-weight:500">Data + historique + segmentation</p>
+      <p>Chaque appel enrichit la fiche client : intentions, sujets, urgence, parcours, conseiller préféré.</p>
+    </div>
+  </div>
+
+  <!-- Comparaison Avant / Avec -->
+  <div class="metaphor-grid">
+    <div class="metaphor-card human reveal" data-delay="1">
+      <div class="mc-head">
+        <div class="mc-icon human">
+          <svg class="ic ic-lg ic-grey"><use href="#i-user"/></svg>
+        </div>
+        <div>
+          <h3>Aujourd'hui</h3>
+          <div class="mc-sub">CRM piloté par la saisie humaine</div>
+        </div>
+      </div>
+      <ul class="mc-list">
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-x"/></svg><span>Données précieuses <strong>non structurées</strong> dans les têtes des conseillers</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-x"/></svg><span>Informations <strong>perdues ou oubliées</strong> entre deux appels</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-x"/></svg><span>Saisie manuelle = chronophage et incomplète</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-x"/></svg><span>Pas d'analyse comportementale, pas de tags d'intention</span></li>
+        <li><svg class="ic mc-bullet ic-grey"><use href="#i-x"/></svg><span>Segmentation marketing basée sur des données partielles</span></li>
+      </ul>
+    </div>
+
+    <div class="metaphor-divider reveal" data-delay="2">
+      <span class="pulse">
+        <svg class="ic ic-lg ic-white"><use href="#i-arrow-r"/></svg>
+      </span>
+    </div>
+
+    <div class="metaphor-card agent reveal" data-delay="3">
+      <div class="mc-head">
+        <div class="mc-icon agent">
+          <svg class="ic ic-lg ic-white"><use href="#i-database"/></svg>
+        </div>
+        <div>
+          <h3>Avec le voice agent</h3>
+          <div class="mc-sub">CRM automatique &amp; temps réel</div>
+        </div>
+      </div>
+      <ul class="mc-list">
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-check"/></svg><span><strong>Création automatique</strong> de contact à chaque nouvel appelant</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-check"/></svg><span><strong>Enrichissement</strong> en temps réel : sujet, urgence, segment, contexte</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-check"/></svg><span><strong>Tagging comportemental</strong> &amp; intentionnel sur chaque conversation</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-check"/></svg><span>Historique conversationnel complet, transcript + audio liés à la fiche</span></li>
+        <li><svg class="ic mc-bullet ic-azure"><use href="#i-check"/></svg><span>Segmentation marketing nourrie par <strong>chaque interaction réelle</strong></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="metaphor-callout reveal" data-delay="4" style="margin-top:32px">
+    <p>
+      Chaque interaction vocale alimente un <strong>CRM vivant</strong> : création de contact, enrichissement
+      des données, tagging comportemental et intentionnel. Le téléphone arrête d'être un point aveugle —
+      il devient <strong>la source la plus riche</strong> de votre intelligence client.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ CTA ═══════════ -->
+<section class="cta" id="contact">
+  <div class="cta-card reveal">
+    <h2>D'autres questions ou besoins spécifiques&nbsp;?</h2>
+    <p>
+      Un cas d'usage particulier, une intégration sur-mesure, une démo, ou simplement envie d'enchaîner
+      sur le QA interne — écrivez-nous, on revient vers vous rapidement.
+    </p>
+    <div class="cta-actions">
+      <a class="btn btn-white" href="mailto:lana@banana-navy.com?subject=Appeldoorn%20Voice%20Agent%20%C2%B7%20Question%20ou%20besoin%20sp%C3%A9cifique">
+        <svg class="ic ic-sm" style="stroke:var(--navy)"><use href="#i-message"/></svg>
+        Nous écrire
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Appeldoorn &amp; Associés <span class="sep">·</span>
+  Voice Agent <span class="sep">·</span>
+  Présentation client v1.0 <span class="sep">·</span>
+  Conçu &amp; opéré par AI Force Studio
+</footer>
+
+<script>
+/* ═══════════════ Scroll reveal ═══════════════ */
+(function () {
+  const els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(e => e.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(e => io.observe(e));
+})();
+
+/* ═══════════════ Smooth-scroll offset for sticky nav ═══════════════ */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href.length < 2) return;
+    const target = document.querySelector(href);
+    if (!target) return;
+    e.preventDefault();
+    const top = target.getBoundingClientRect().top + window.scrollY - 76;
+    window.scrollTo({ top, behavior: 'smooth' });
+  });
+});
+
+/* ═══════════════ Phase progress fill = % of "done" + half "current" ═══════════════ */
+(function () {
+  const phases = document.querySelectorAll('.phase');
+  if (!phases.length) return;
+  const total = phases.length;
+  let score = 0;
+  phases.forEach(p => {
+    const s = p.dataset.status;
+    if (s === 'done') score += 1;
+    else if (s === 'current') score += 0.5;
+  });
+  const pct = Math.round((score / total) * 100);
+  const fill = document.querySelector('.phase-progress-fill');
+  if (fill) fill.style.setProperty('--progress', pct + '%');
+})();
+
+/* ═══════════════ Auto-close other phases when one is opened (accordion mode) ═══════════════ */
+document.querySelectorAll('.phase').forEach(d => {
+  d.addEventListener('toggle', () => {
+    if (d.open) {
+      document.querySelectorAll('.phase').forEach(o => {
+        if (o !== d) o.open = false;
+      });
+    }
+  });
+});
+</script>
+</body>
+</html>
